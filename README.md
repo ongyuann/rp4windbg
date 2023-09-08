@@ -10,7 +10,7 @@
 
 ## Build
 
-You can find shell scripts in [src/build](src/build) for every supported platforms; below is the Linux example:
+You can find build scripts in [src/build](src/build) for every supported platforms; below is a example for Windows - Microsoft Visual Studio:
 
 ```
 C:\Users\tahai\code\rp4windbg\src\build> .\build-release-msvc.bat
