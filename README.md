@@ -27,6 +27,12 @@ MSBuild version 17.5.1+f6fdcf537 for .NET Framework
 rp-win.vcxproj -> C:\Users\tahai\Code\rp4windbg\src\build\RelWithDebInfo\rp-win.dll
 ```
 
+Make sure that all submodules have been pulled before running the build process:
+
+```
+git submodule update --init --recursive
+```
+
 ## Authors
 
 * Axel '[0vercl0k](https://twitter.com/0vercl0k)' Souchet
