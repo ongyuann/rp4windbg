@@ -32,6 +32,14 @@ public:
   void display_information(const VerbosityLevel lvl = VERBOSE_LEVEL_1);
 
   /*!
+   *  \brief Display information concerning the executable format (section
+   * address, entry point, stuff like that) using Windbg API.
+   *
+   *  \param lvl: Set the verbosity level you want
+   */
+  void display_information_wd(WinDBGExt client, const VerbosityLevel lvl = VERBOSE_LEVEL_1);
+
+  /*!
    *  \brief Find all the rop gadgets
    *
    *  \param depth: Set the depth of the research (don't forget the ending
@@ -53,6 +61,16 @@ public:
    * \param size: It is the size of the buffer hex_values
    */
   void search_and_display(const uint8_t *hex_values, const size_t size,
+                          const uint64_t base);
+   /*!
+   *  \brief Find hex values in the section of the program
+   *
+   * \param client: WinDBGExt obj
+   * \param hex_values: It is a pointer on where it can find the bytes to find
+   * in memory
+   * \param size: It is the size of the buffer hex_values
+   */
+  void search_and_display_wd(WinDBGExt client, const uint8_t *hex_values, const size_t size,
                           const uint64_t base);
 
   /*!

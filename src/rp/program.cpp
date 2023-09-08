@@ -9,13 +9,15 @@
 #include "toolbox.hpp"
 #include "x64.hpp"
 #include "x86.hpp"
-#include <fmt/printf.h>
+//#include <fmt/printf.h>
 #include <future>
 #include <map>
 #include <mutex>
 #include <queue>
 #include <sstream>
 #include <thread>
+
+#include "windbgext.hpp"
 
 Program::Program(const std::string &program_path, const CPU::E_CPU arch) {
   uint32_t magic_dword = 0;
@@ -77,6 +79,10 @@ Program::Program(const std::string &program_path, const CPU::E_CPU arch) {
 
 void Program::display_information(const VerbosityLevel lvl) {
   m_exformat->display_information(lvl);
+}
+
+void Program::display_information_wd(WinDBGExt client,const VerbosityLevel lvl) {
+  m_exformat->display_information_wd(client, lvl);
 }
 
 GadgetMultiset Program::find_gadgets(const uint32_t depth,
@@ -145,6 +151,24 @@ void Program::search_and_display(const uint8_t *hex_values, const size_t size,
       const uint64_t va_section = executable_section.get_vaddr();
       const uint64_t va = va_section + offset;
       display_offset_lf(va, hex_values, size);
+    }
+  }
+}
+
+void Program::search_and_display_wd(WinDBGExt client, const uint8_t *hex_values, const size_t size,
+                                 const uint64_t base) {
+  const auto &executable_sections =
+      m_exformat->get_executables_section(m_file, base);
+  if (executable_sections.size() == 0) {
+    client.PrintOut("It seems your binary haven't executable sections.\n");
+  }
+
+  for (const auto &executable_section : executable_sections) {
+    const auto &offsets = executable_section.search_in_memory(hex_values, size);
+    for (const auto &offset : offsets) {
+      const uint64_t va_section = executable_section.get_vaddr();
+      const uint64_t va = va_section + offset;
+      display_offset_lf_wd(client, va, hex_values, size);
     }
   }
 }

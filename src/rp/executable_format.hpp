@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "windbgext.hpp"
+
 /*! \class ExecutableFormat
  *
  *  An ExecutableFormat is the second part composing a Program instance ; it is
@@ -39,6 +41,17 @@ public:
    */
   virtual void display_information(const VerbosityLevel lvl) const {
     fmt::print("Verbose level: {}\n", verbosity_to_string(lvl));
+  }
+
+  /*!
+   *  \brief Display information concerning the executable format: where
+   * sections begin, entry point, etc.
+   *
+   *  \param client: WinDBGExt obj 
+   *  \param lvl: Set a verbosity level
+   */
+  virtual void display_information_wd(WinDBGExt client, const VerbosityLevel lvl) const {
+    client.PrintOut("Verbose level: %s\n", verbosity_to_string(lvl).c_str());
   }
 
   /*!

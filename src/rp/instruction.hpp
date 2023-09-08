@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "windbgext.hpp"
+
 /*! \class Instruction
  *
  *  Each instruction instance holds a disassembly, an offset (where we can find
@@ -41,6 +43,18 @@ public:
   void print_bytes() const {
     for (const auto &byte : m_bytes) {
       fmt::print("\\x{:02x}", byte);
+    }
+  }
+
+  /*!
+   *  \brief Get the disassembly of the instruction
+   *  \param client: winDBGExt obj
+   *  \return the disassembly of the instruction
+   */
+  void print_bytes_wd(WinDBGExt client) const {
+    for (const auto &byte : m_bytes) {
+      client.PrintOut("\\x%02x", byte);
+      //client.PrintOut("foobar:\\x%02x", byte);
     }
   }
 

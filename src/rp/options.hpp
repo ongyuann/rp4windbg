@@ -6,6 +6,7 @@
 
 struct Options_t {
   std::string file;
+  bool help = false;
   uint8_t display = 0;
   uint32_t rop = 0;
   CPU::E_CPU raw = CPU::E_CPU::CPU_UNKNOWN;

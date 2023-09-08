@@ -1,0 +1,3 @@
+[submodule "src/third_party/windbgext"]
+	path = src/third_party/windbgext
+	url = https://github.com/tahadraidia/windbgext

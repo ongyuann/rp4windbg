@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "windbgext.hpp"
+
 /*! \class Gadget
  *
  * A gadget is a sequence of instructions that ends by an ending instruction
@@ -49,6 +51,15 @@ public:
       fmt::print("{} ;", m_instructions[idx].get_disassembly());
       if ((idx + 1) < m_instructions.size()) {
         fmt::print(" ");
+      }
+    }
+  }
+
+  void print_disassembly_wd(WinDBGExt client) const {
+    for (size_t idx = 0; idx < m_instructions.size(); idx++) {
+      client.PrintOut("%s ;", m_instructions[idx].get_disassembly().c_str());
+      if ((idx + 1) < m_instructions.size()) {
+        client.PrintOut(" ");
       }
     }
   }
@@ -160,6 +171,12 @@ public:
   void print_bytes() const {
     for (const auto &i : m_instructions) {
       i.print_bytes();
+    }
+  }
+
+  void print_bytes_wd(WinDBGExt client) const {
+    for (const auto &i : m_instructions) {
+      i.print_bytes_wd(client);
     }
   }
 

@@ -6,3 +6,5 @@ bin/Release/
 bin/rp++
 standalone-binaries-*/
 rop_mosaic.png
+**/*/compile_commands.json
+.cache/

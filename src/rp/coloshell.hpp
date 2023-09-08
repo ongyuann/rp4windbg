@@ -185,6 +185,7 @@ template <class T> static void coloshell(const T t, const Colors colo) {
     disable_color();                                                           \
   }
 
+
 /**
  * \def display_hex_field_lf(field, n)
  *  Display an hex value in red with 0 filling, a line feed and 25b column.
@@ -210,6 +211,7 @@ template <class T> static void coloshell(const T t, const Colors colo) {
     display_hex_field(field2, 25);                                             \
     fmt::print("\n");                                                          \
   }
+
 
 /**
  * \def display_short_hex_field(field)
@@ -274,6 +276,31 @@ template <class T> static void coloshell(const T t, const Colors colo) {
   }
 
 /**
+ * \def display_gadget_lfi_wd(va, gadget)
+ *  Display a gadget with a line feed and its VA.
+ *
+ * \param wdext: It is the wdext client
+ * \param va: It is the gadget VA
+ * \param gadget: It is the gadget you want to output
+ */
+#define display_gadget_lf_wd(wdext, va, gadget)                                \
+  {                                                                            \
+    if (!does_badbytes_filter_apply(va, badbyte_list)) {                       \
+      wdext.PrintOut("0x%p", va);                                              \
+      wdext.PrintOut(": ");                                                    \
+      (gadget).print_disassembly_wd(wdext);                                    \
+      /*if (g_opts.print_bytes) {*/                                            \
+      if (true) {                                                              \
+        wdext.PrintOut(" ");                                                   \
+        (gadget).print_bytes_wd(wdext);                                        \
+      }                                                                        \
+      wdext.PrintOut(" (%ld found)\n", (gadget).get_nb());                     \
+    } else {                                                                   \
+      nb_gadgets_filtered++;                                                   \
+    }                                                                          \
+  }
+
+/**
  * \def display_offset_lf(va, hex_val, size)
  *  Display an offset with a line feed and the hex values.
  *
@@ -296,5 +323,32 @@ template <class T> static void coloshell(const T t, const Colors colo) {
       }                                                                        \
     }                                                                          \
     fmt::print("\n");                                                          \
+    disable_color();                                                           \
+  }
+
+ /**
+ * \def display_offset_lf(va, hex_val, size)
+ *  Display an offset with a line feed and the hex values.
+ *
+ * \param wdext: It is the wdext client
+ * \param va: It is the gadget VA
+ * \param hex_val: It is the hex values
+ * \param size: It is the size of the hex values
+ */
+#define display_offset_lf_wd(wdext, va, hex_val, size)                         \
+  {                                                                            \
+    enable_color(COLO_RED);                                                    \
+    wdext.PrintOut("0x%x", va);                                                \
+    disable_color();                                                           \
+    wdext.PrintOut(": ");                                                      \
+    enable_color(COLO_GREEN);                                                  \
+    for (uint32_t i = 0; i < size; ++i) {                                      \
+      if (isprint(hex_val[i])) {                                               \
+        wdext.PrintOut("%c", hex_val[i]);                                      \
+      } else {                                                                 \
+        wdext.PrintOut("\\x%02x", hex_val[i]);                                 \
+      }                                                                        \
+    }                                                                          \
+    wdext.PrintOut("\n");                                                      \
     disable_color();                                                           \
   }

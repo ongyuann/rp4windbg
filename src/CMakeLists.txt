@@ -8,7 +8,7 @@ project(rp++)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/third_party/fmt/include)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/third_party/beaengine/include)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/third_party/capstone/include)
-include_directories(${CMAKE_CURRENT_LIST_DIR}/third_party/CLI11)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/third_party/windbgext)
 
 add_compile_definitions(FMT_HEADER_ONLY BEA_ENGINE_STATIC CAPSTONE_HAS_ARM CAPSTONE_HAS_ARM64 CAPSTONE_USE_SYS_DYN_MEM)
 
@@ -36,10 +36,12 @@ file(
     third_party/capstone/*.c
 )
 
-add_executable(
+add_library(
     ${RP_PLAT}
+    SHARED
     ${rp_files}
     "third_party/beaengine/src/BeaEngine.c"
+    "third_party/windbgext/windbgext.cpp"
 )
 
 if(UNIX)
